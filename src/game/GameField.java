@@ -1,32 +1,29 @@
-package util;
+package game;
 
-import game.Constants;
 import model.Block;
 import model.Player;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class CanvasAdapter {
+public class GameField extends JPanel {
   private Player player;
-  private List<Block> blocks = new ArrayList<>();
-  private final JPanel canvas;
+  private final List<Block> blocks = new ArrayList<>();
   private final Random rand = new Random();
 
-  public CanvasAdapter(JPanel canvas) {
-    this.canvas = canvas;
-    this.canvas.setLayout(null);
+  public GameField() {
+    this.setLayout(null);
   }
 
   public void createBlock() {
     int size = rand.nextInt(Constants.BLOCKMAXSIZE - Constants.BLOCKMINSIZE) + Constants.BLOCKMINSIZE;
-    int pos = rand.nextInt(canvas.getWidth() - size);
+    int pos = rand.nextInt(this.getWidth() - size);
     int speed = rand.nextInt(Constants.BLOCKMAXSPEED - Constants.BLOCKMINSPEED) + Constants.BLOCKMINSPEED;
     Block block = new Block(size, speed, pos, -size); // appear from outside canvas
     blocks.add(block);
-    //canvas.add(block);
   }
 
   public boolean checkBlockCollisions(float gameSpeed) {
@@ -35,29 +32,26 @@ public class CanvasAdapter {
       // update position
       int y = b.getY();
       y += (int) (b.getMoveSpeed() * gameSpeed);
-      b.getRect().setLocation(b.getX(), y);
+      b.setY(y);
       // check collision
       if (b.getRect().intersects(player.getRect())) {
         return true;
       }
       // remove if touches bottom
-      if (y + b.getY() >= canvas.getHeight()) {
+      if (y + b.getSize() >= this.getHeight()) {
         toRemove.add(b);
       }
     }
     for (Block b : toRemove) {
-      canvas.remove(b);
+      blocks.remove(b);
     }
     return false; // no collisions with player
   }
 
   public void addPlayer() {
     player = new Player();
-    canvas.add(player);
-    player.setLocation(canvas.getWidth() / 2 - Constants.PLAYERSIZE / 2,
-        canvas.getHeight() - Constants.PLAYERSIZE * 5 / 3); // TODO: why?
-    canvas.revalidate();
-    canvas.repaint();
+    player.setX(this.getWidth() / 2 - Constants.PLAYERSIZE / 2);
+    player.setY(this.getHeight() - Constants.PLAYERSIZE); // TODO: why?
   }
 
   public void updatePlayerPosition(int direction) {
@@ -69,17 +63,27 @@ public class CanvasAdapter {
 
     if (movement != 0) {
       int newPos = player.getX() + movement;
-      newPos = Math.max(0, Math.min(newPos, canvas.getWidth() - Constants.PLAYERSIZE));
-      player.setLocation(newPos, player.getY());
+      newPos = Math.max(0, Math.min(newPos, this.getWidth() - Constants.PLAYERSIZE));
+      player.setX(newPos);
     }
+    repaint();
   }
 
   public void reset() {
-    blocks = new ArrayList<>();
-    canvas.removeAll();
-    canvas.add(player);
-    player.setLocation(player.getX(), player.getY());
-    canvas.revalidate();
-    canvas.repaint();
+    blocks.clear();
+    addPlayer();
+    repaint();
+  }
+
+  @Override
+  protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    Graphics2D g2d = (Graphics2D) g;
+    g2d.setColor(Constants.PLAYERCOLOR);
+    g2d.fill(player.getRect());
+    g2d.setColor(Constants.BLOCKCOLOR);
+    for (Block b : blocks) {
+      g2d.fill(b.getRect());
+    }
   }
 }

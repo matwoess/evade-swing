@@ -2,15 +2,11 @@ package model;
 
 import java.awt.*;
 
-public class Entity extends Component {
+public class Entity {
   private int size;
   private int x;
   private int y;
   private final Rectangle rect;
-
-  public Entity(int size, Color c) {
-    this(size, c, 0, 0);
-  }
 
   public Entity(int size, Color c, int x, int y) {
     this.size = size;
@@ -18,16 +14,10 @@ public class Entity extends Component {
     this.y = y;
     this.rect = new Rectangle(size, size);
     this.rect.setLocation(x, y);
-    //Canvas.SetLeft(Rect, X);
-    //Canvas.SetTop(Rect, Y);
   }
 
-  public int getSize1() {
+  public int getSize() {
     return size;
-  }
-
-  public void setSize(int size) {
-    this.size = size;
   }
 
   public int getX() {

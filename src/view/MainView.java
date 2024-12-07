@@ -1,8 +1,7 @@
 package view;
 
+import game.GameField;
 import game.Constants;
-import model.Entity;
-import model.Player;
 import util.*;
 
 import javax.swing.*;
@@ -11,7 +10,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class MainView extends JFrame {
-  private final CanvasAdapter adapter;
+  private final GameField gameField;
   private final Timer gameTimer;
   private final Timer playedTimer;
   private float gameSpeed = 1;
@@ -22,6 +21,7 @@ public class MainView extends JFrame {
   private final JLabel lHighScoreName;
   private final JLabel lHighScoreTime;
   private final JLabel lTime;
+  private final JLabel fpsLabel;
 
   public MainView() {
     setTitle("Evade Game");
@@ -49,17 +49,12 @@ public class MainView extends JFrame {
     infoPanel.add(lHighScoreTime);
     infoPanel.add(new JLabel("Time:"));
     infoPanel.add(lTime);
-
+    fpsLabel = new JLabel("FPS: 0");
+    infoPanel.add(fpsLabel);
     add(infoPanel, BorderLayout.NORTH);
 
-    JPanel canvas = new JPanel();
-    canvas.setBackground(Color.WHITE);
-    add(canvas, BorderLayout.CENTER);
-
-    adapter = new CanvasAdapter(canvas);
-    adapter.addPlayer();
-    canvas.add(new JButton("Test"));
-    canvas.validate();
+    gameField = new GameField();
+    add(gameField, BorderLayout.CENTER);
 
     // Get highscore
     String name = HighScoreManager.readAttribute("name");
@@ -88,6 +83,7 @@ public class MainView extends JFrame {
 
     setFocusable(true);
     setVisible(true);
+    gameField.addPlayer();
   }
 
   private void onKeyDownHandler(KeyEvent e) {
@@ -105,22 +101,22 @@ public class MainView extends JFrame {
   }
 
   private void playedTimerTick() {
-    gameSpeed = 1 + ((float) (int) timePlayed / 10) * Constants.GAMESPEEDFACTOR;
+    gameSpeed = 1 + (int) (timePlayed / 10) * Constants.GAMESPEEDFACTOR;
     timePlayed += 0.1F;
     lTime.setText(String.format("%.1f", timePlayed));
   }
 
   private void gameTimerTick() {
-    adapter.updatePlayerPosition(direction);
+    gameField.updatePlayerPosition(direction);
     if (timePlayed >= 0) { // countdown to game-start
-      boolean gameOver = adapter.checkBlockCollisions(gameSpeed);
+      boolean gameOver = gameField.checkBlockCollisions(gameSpeed);
       if (gameOver) {
         gameOver();
       }
       count += gameSpeed;
       if (count >= Constants.BLOCKCREATETICKS) {
         count = 0;
-        adapter.createBlock();
+        gameField.createBlock();
       }
     }
   }
@@ -161,7 +157,7 @@ public class MainView extends JFrame {
     count = 0;
     timePlayed = -Constants.COUNTDOWNTIME;
     // Reset game field
-    adapter.reset();
+    gameField.reset();
     // Get highscore
     String name = HighScoreManager.readAttribute("name");
     float time = Float.parseFloat(HighScoreManager.readAttribute("time"));
