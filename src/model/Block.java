@@ -6,7 +6,7 @@ public class Block extends Entity {
   }
 
   public Block(int size, int speed, int x, int y) {
-    super(size, game.Constants.BLOCKCOLOR, x, y);
+    super(size, game.Constants.BLOCK_COLOR, x, y);
     this.moveSpeed = speed;
   }
 

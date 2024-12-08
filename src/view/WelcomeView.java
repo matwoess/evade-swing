@@ -1,5 +1,8 @@
 package view;
 
+import game.Constants;
+import util.HighScoreManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -28,6 +31,7 @@ public class WelcomeView extends JDialog {
     txtName = new JTextField();
     txtName.setFont(new Font("Arial", Font.PLAIN, 24));
     centerPanel.add(txtName);
+    txtName.setText(HighScoreManager.readAttribute(Constants.LAST_PLAYER_NAME));
 
     JLabel lblObjective = new JLabel("Try to avoid the falling blocks with the (yellow) player as long as possible!", SwingConstants.CENTER);
     lblObjective.setFont(new Font("Arial", Font.PLAIN, 20));

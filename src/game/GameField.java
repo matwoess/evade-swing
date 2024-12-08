@@ -19,9 +19,9 @@ public class GameField extends JPanel {
   }
 
   public void createBlock() {
-    int size = rand.nextInt(Constants.BLOCKMAXSIZE - Constants.BLOCKMINSIZE) + Constants.BLOCKMINSIZE;
+    int size = rand.nextInt(Constants.BLOCK_MAX_SIZE - Constants.BLOCK_MIN_SIZE) + Constants.BLOCK_MIN_SIZE;
     int pos = rand.nextInt(this.getWidth() - size);
-    int speed = rand.nextInt(Constants.BLOCKMAXSPEED - Constants.BLOCKMINSPEED) + Constants.BLOCKMINSPEED;
+    int speed = rand.nextInt(Constants.BLOCK_MAX_SPEED - Constants.BLOCK_MIN_SPEED) + Constants.BLOCK_MIN_SPEED;
     Block block = new Block(size, speed, pos, -size); // appear from outside canvas
     blocks.add(block);
   }
@@ -50,20 +50,20 @@ public class GameField extends JPanel {
 
   public void addPlayer() {
     player = new Player();
-    player.setX(this.getWidth() / 2 - Constants.PLAYERSIZE / 2);
-    player.setY(this.getHeight() - Constants.PLAYERSIZE); // TODO: why?
+    player.setX(this.getWidth() / 2 - Constants.PLAYER_SIZE / 2);
+    player.setY(this.getHeight() - Constants.PLAYER_SIZE); // TODO: why?
   }
 
   public void updatePlayerPosition(int direction) {
     int movement = switch (direction) {
-      case -1 -> -Constants.PLAYERMOVESPEED;
-      case 1 -> Constants.PLAYERMOVESPEED;
+      case -1 -> -Constants.PLAYER_MOVES_PEED;
+      case 1 -> Constants.PLAYER_MOVES_PEED;
       default -> 0;
     };
 
     if (movement != 0) {
       int newPos = player.getX() + movement;
-      newPos = Math.max(0, Math.min(newPos, this.getWidth() - Constants.PLAYERSIZE));
+      newPos = Math.max(0, Math.min(newPos, this.getWidth() - Constants.PLAYER_SIZE));
       player.setX(newPos);
     }
     repaint();
@@ -79,9 +79,9 @@ public class GameField extends JPanel {
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g;
-    g2d.setColor(Constants.PLAYERCOLOR);
+    g2d.setColor(Constants.PLAYER_COLOR);
     g2d.fill(player.getRect());
-    g2d.setColor(Constants.BLOCKCOLOR);
+    g2d.setColor(Constants.BLOCK_COLOR);
     for (Block b : blocks) {
       g2d.fill(b.getRect());
     }

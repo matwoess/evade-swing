@@ -16,7 +16,7 @@ public class MainView extends JFrame {
   private float gameSpeed = 1;
   private int direction = 0;
   private float count = 0;
-  private float timePlayed = -Constants.COUNTDOWNTIME;
+  private float timePlayed = -Constants.COUNTDOWN_TIME;
   private final JLabel lPlayerName;
   private final JLabel lHighScoreName;
   private final JLabel lHighScoreTime;
@@ -34,6 +34,7 @@ public class MainView extends JFrame {
     if (playerName == null || playerName.isEmpty()) {
       System.exit(0);
     }
+    HighScoreManager.writeAttribute(Constants.LAST_PLAYER_NAME, playerName);
 
     lPlayerName = new JLabel(playerName);
     lHighScoreName = new JLabel();
@@ -57,8 +58,8 @@ public class MainView extends JFrame {
     add(gameField, BorderLayout.CENTER);
 
     // Get highscore
-    String name = HighScoreManager.readAttribute("name");
-    float time = Float.parseFloat(HighScoreManager.readAttribute("time"));
+    String name = HighScoreManager.readAttribute(Constants.HIGH_SCORE_NAME);
+    float time = Float.parseFloat(HighScoreManager.readAttribute(Constants.HIGH_SCORE_TIME));
     lHighScoreName.setText(name);
     lHighScoreTime.setText(String.valueOf(time));
 
@@ -101,7 +102,7 @@ public class MainView extends JFrame {
   }
 
   private void playedTimerTick() {
-    gameSpeed = 1 + (int) (timePlayed / 10) * Constants.GAMESPEEDFACTOR;
+    gameSpeed = 1 + (int) (timePlayed / 10) * Constants.GAME_SPEED_FACTOR;
     timePlayed += 0.1F;
     lTime.setText(String.format("%.1f", timePlayed));
   }
@@ -114,7 +115,7 @@ public class MainView extends JFrame {
         gameOver();
       }
       count += gameSpeed;
-      if (count >= Constants.BLOCKCREATETICKS) {
+      if (count >= Constants.BLOCK_CREATE_TICKS) {
         count = 0;
         gameField.createBlock();
       }
@@ -155,12 +156,12 @@ public class MainView extends JFrame {
     gameSpeed = 1;
     direction = 0;
     count = 0;
-    timePlayed = -Constants.COUNTDOWNTIME;
+    timePlayed = -Constants.COUNTDOWN_TIME;
     // Reset game field
     gameField.reset();
     // Get highscore
-    String name = HighScoreManager.readAttribute("name");
-    float time = Float.parseFloat(HighScoreManager.readAttribute("time"));
+    String name = HighScoreManager.readAttribute(Constants.HIGH_SCORE_NAME);
+    float time = Float.parseFloat(HighScoreManager.readAttribute(Constants.HIGH_SCORE_TIME));
     lHighScoreName.setText(name);
     lHighScoreTime.setText(String.valueOf(time));
     gameTimer.start();

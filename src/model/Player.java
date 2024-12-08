@@ -6,6 +6,6 @@ public class Player extends Entity {
   }
 
   public Player(int x, int y) {
-    super(game.Constants.PLAYERSIZE, game.Constants.PLAYERCOLOR, x, y);
+    super(game.Constants.PLAYER_SIZE, game.Constants.PLAYER_COLOR, x, y);
   }
 }
