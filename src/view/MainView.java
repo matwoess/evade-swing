@@ -135,16 +135,16 @@ public class MainView extends JFrame {
     if (timePlayed >= score) { // highscore beaten - replace it
       String newName = lPlayerName.getText();
       String newTime = lTime.getText();
-      HighScoreManager.writeAttribute("name", newName);
-      HighScoreManager.writeAttribute("time", newTime);
+      HighScoreManager.writeAttribute(Constants.HIGH_SCORE_NAME, newName);
+      HighScoreManager.writeAttribute(Constants.HIGH_SCORE_TIME, newTime);
       lHighScoreName.setText(newName);
       lHighScoreTime.setText(newTime);
     }
   }
 
   private void endGame() {
-    int option = JOptionPane.showConfirmDialog(this, "Game Over! Do you want to restart?", "Game Over", JOptionPane.YES_NO_OPTION);
-    if (option == JOptionPane.YES_OPTION) {
+    GameOverView gameOverDialog = new GameOverView(this, lPlayerName.getText(), lTime.getText(), lHighScoreName.getText(), lHighScoreTime.getText());
+    if (gameOverDialog.getReplay()) {
       restartGame();
     } else {
       System.exit(0);
@@ -159,7 +159,7 @@ public class MainView extends JFrame {
     timePlayed = -Constants.COUNTDOWN_TIME;
     // Reset game field
     gameField.reset();
-    // Get highscore
+    // Get high score
     String name = HighScoreManager.readAttribute(Constants.HIGH_SCORE_NAME);
     float time = Float.parseFloat(HighScoreManager.readAttribute(Constants.HIGH_SCORE_TIME));
     lHighScoreName.setText(name);

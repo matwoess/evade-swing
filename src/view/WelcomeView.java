@@ -4,6 +4,7 @@ import game.Constants;
 import util.HighScoreManager;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -14,38 +15,43 @@ public class WelcomeView extends JDialog {
   public WelcomeView(Frame owner) {
     super(owner, "Welcome", true);
     initializeComponents();
+    setVisible(true);
   }
 
   private void initializeComponents() {
-    setLayout(new BorderLayout());
+    JComponent contentPane = (JComponent) getContentPane();
+    GridLayout layout = new GridLayout(6, 1);
+    layout.setVgap(10);
+    setLayout(layout);
+    contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-    JLabel lblWelcome = new JLabel("Welcome to Evade!", SwingConstants.CENTER);
+    JLabel lblWelcome = new JLabel("Welcome to Evade!");
     lblWelcome.setFont(new Font("Arial", Font.BOLD, 20));
-    add(lblWelcome, BorderLayout.NORTH);
+    lblWelcome.setAlignmentX(Component.CENTER_ALIGNMENT);
+    lblWelcome.setBorder(new EmptyBorder(0, 0, 20, 0));
+    add(lblWelcome);
 
-    JPanel centerPanel = new JPanel(new GridLayout(4, 1));
-    JLabel lblInstruction = new JLabel("Please enter your name and press <RETURN>", SwingConstants.CENTER);
+    JLabel lblInstruction = new JLabel("Please enter your name and press <RETURN>");
     lblInstruction.setFont(new Font("Arial", Font.PLAIN, 20));
-    centerPanel.add(lblInstruction);
+    add(lblInstruction);
 
     txtName = new JTextField();
     txtName.setFont(new Font("Arial", Font.PLAIN, 24));
-    centerPanel.add(txtName);
     txtName.setText(HighScoreManager.readAttribute(Constants.LAST_PLAYER_NAME));
+    add(txtName);
 
-    JLabel lblObjective = new JLabel("Try to avoid the falling blocks with the (yellow) player as long as possible!", SwingConstants.CENTER);
+
+    JLabel lblObjective = new JLabel("Try to avoid the falling blocks with the (yellow) player as long as possible!");
     lblObjective.setFont(new Font("Arial", Font.PLAIN, 20));
-    centerPanel.add(lblObjective);
+    add(lblObjective);
 
-    JLabel lblControls = new JLabel("Use <LEFT> and <RIGHT> to move.", SwingConstants.CENTER);
+    JLabel lblControls = new JLabel("Use <LEFT> and <RIGHT> to move.");
     lblControls.setFont(new Font("Arial", Font.PLAIN, 20));
-    centerPanel.add(lblControls);
+    add(lblControls);
 
-    JLabel lblSpeed = new JLabel("The game will get faster every 10 seconds...", SwingConstants.CENTER);
+    JLabel lblSpeed = new JLabel("The game will get faster every 10 seconds...");
     lblSpeed.setFont(new Font("Arial", Font.PLAIN, 20));
-    centerPanel.add(lblSpeed);
-
-    add(centerPanel, BorderLayout.CENTER);
+    add(lblSpeed);
 
     txtName.addKeyListener(new KeyAdapter() {
       @Override
@@ -58,7 +64,6 @@ public class WelcomeView extends JDialog {
 
     pack();
     setLocationRelativeTo(null);
-    setVisible(true);
   }
 
   public String getPlayerName() {
