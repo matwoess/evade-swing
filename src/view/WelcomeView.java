@@ -31,7 +31,7 @@ public class WelcomeView extends JDialog {
     lblWelcome.setBorder(new EmptyBorder(0, 0, 20, 0));
     add(lblWelcome);
 
-    JLabel lblInstruction = new JLabel("Please enter your name and press <RETURN>");
+    JLabel lblInstruction = new JLabel("<html>Please enter your name and press <code>[RETURN]</code>.</html>");
     lblInstruction.setFont(new Font("Arial", Font.PLAIN, 20));
     add(lblInstruction);
 
@@ -45,7 +45,7 @@ public class WelcomeView extends JDialog {
     lblObjective.setFont(new Font("Arial", Font.PLAIN, 20));
     add(lblObjective);
 
-    JLabel lblControls = new JLabel("Use <LEFT> and <RIGHT> to move.");
+    JLabel lblControls = new JLabel("<html>Use <code>[LEFT]</code> and <code>[RIGHT]</code> to move.</html>");
     lblControls.setFont(new Font("Arial", Font.PLAIN, 20));
     add(lblControls);
 
