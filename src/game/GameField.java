@@ -83,9 +83,13 @@ public class GameField extends JPanel {
     Graphics2D g2d = (Graphics2D) g;
     g2d.setColor(Constants.PLAYER_COLOR);
     g2d.fill(player.getRect());
-    g2d.setColor(Constants.BLOCK_COLOR);
+    g2d.setColor(Color.BLACK);
+    g2d.drawRect(player.getX(), player.getY(), player.getSize(), player.getSize());
     for (Block b : blocks) {
+      g2d.setColor(Constants.BLOCK_COLOR);
       g2d.fill(b.getRect());
+      g2d.setColor(Color.BLACK);
+      g2d.drawRect(b.getX(), b.getY(), b.getSize(), b.getSize());
     }
     fpsCounter++;
   }
