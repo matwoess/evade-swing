@@ -21,9 +21,9 @@ public class GameField extends JPanel {
   }
 
   public void createBlock() {
-    int size = rand.nextInt(Constants.BLOCK_MAX_SIZE - Constants.BLOCK_MIN_SIZE) + Constants.BLOCK_MIN_SIZE;
-    int pos = rand.nextInt(this.getWidth() - size);
-    int speed = rand.nextInt(Constants.BLOCK_MAX_SPEED - Constants.BLOCK_MIN_SPEED) + Constants.BLOCK_MIN_SPEED;
+    int size = rand.nextInt(Constants.BLOCK_MAX_SIZE + 1 - Constants.BLOCK_MIN_SIZE) + Constants.BLOCK_MIN_SIZE;
+    int pos = rand.nextInt(this.getWidth() - size + 1);
+    int speed = rand.nextInt(Constants.BLOCK_MAX_SPEED + 1 - Constants.BLOCK_MIN_SPEED) + Constants.BLOCK_MIN_SPEED;
     Block block = new Block(size, speed, pos, -size); // appear from outside canvas
     blocks.add(block);
   }
