@@ -14,6 +14,8 @@ public class GameField extends JPanel {
   private final List<Block> blocks = new ArrayList<>();
   private final Random rand = new Random();
 
+  private int fpsCounter = 0;
+
   public GameField() {
     this.setLayout(null);
   }
@@ -85,5 +87,12 @@ public class GameField extends JPanel {
     for (Block b : blocks) {
       g2d.fill(b.getRect());
     }
+    fpsCounter++;
+  }
+
+  public int getFpsCounter() {
+    int currentFps = fpsCounter;
+    fpsCounter = 0;
+    return currentFps;
   }
 }

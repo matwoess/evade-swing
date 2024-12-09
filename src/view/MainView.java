@@ -5,54 +5,93 @@ import game.Constants;
 import util.*;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class MainView extends JFrame {
-  private final GameField gameField;
-  private final Timer gameTimer;
-  private final Timer playedTimer;
+  private GameField gameField;
+  private Timer gameTimer;
+  private Timer playedTimer;
+  private Timer fpsTimer;
   private float gameSpeed = 1;
   private int direction = 0;
   private float count = 0;
   private float timePlayed = -Constants.COUNTDOWN_TIME;
-  private final JLabel lPlayerName;
-  private final JLabel lHighScoreName;
-  private final JLabel lHighScoreTime;
-  private final JLabel lTime;
-  private final JLabel fpsLabel;
+  private JLabel lPlayerName;
+  private JLabel lHighScoreName;
+  private JLabel lHighScoreTime;
+  private JLabel lTime;
+  private JLabel fpsLabel;
 
   public MainView() {
     setTitle("Evade Game");
-    setSize(800, 600);
+    setSize(1000, 600);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(new BorderLayout());
 
-    // Prompt user for name
+    String playerName = promptUserForPlayerName();
+
+    initializeComponents(playerName);
+
+    startTimers();
+
+    setFocusable(true);
+    setVisible(true);
+    gameField.addPlayer();
+  }
+
+  private String promptUserForPlayerName() {
     String playerName = new WelcomeView(this).getPlayerName();
     if (playerName == null || playerName.isEmpty()) {
       System.exit(0);
     }
     HighScoreManager.writeAttribute(Constants.LAST_PLAYER_NAME, playerName);
+    return playerName;
+  }
 
+  private void initializeComponents(String playerName) {
     lPlayerName = new JLabel(playerName);
     lHighScoreName = new JLabel();
     lHighScoreTime = new JLabel();
     lTime = new JLabel("0.0");
+    fpsLabel = new JLabel("0");
 
     JPanel infoPanel = new JPanel();
-    infoPanel.setLayout(new GridLayout(1, 4));
-    infoPanel.add(new JLabel("Player:"));
-    infoPanel.add(lPlayerName);
-    infoPanel.add(new JLabel("Highscore:"));
-    infoPanel.add(lHighScoreName);
-    infoPanel.add(lHighScoreTime);
-    infoPanel.add(new JLabel("Time:"));
-    infoPanel.add(lTime);
-    fpsLabel = new JLabel("FPS: 0");
-    infoPanel.add(fpsLabel);
-    add(infoPanel, BorderLayout.NORTH);
+    infoPanel.setLayout(new GridLayout(4, 1));
+
+    Box box = Box.createVerticalBox();
+    JLabel playerTitle = new JLabel("Player Name:");
+    playerTitle.setFont(playerTitle.getFont().deriveFont(Font.BOLD));
+    box.add(playerTitle);
+    box.add(lPlayerName);
+    infoPanel.add(box);
+
+    box = Box.createVerticalBox();
+    JLabel highScoreTimeTitle = new JLabel("Time:");
+    highScoreTimeTitle.setFont(highScoreTimeTitle.getFont().deriveFont(Font.BOLD));
+    box.add(highScoreTimeTitle);
+    box.add(lTime);
+    infoPanel.add(box);
+
+    box = Box.createVerticalBox();
+    JLabel highScoreNameTitle = new JLabel("Highscore:");
+    highScoreNameTitle.setFont(highScoreNameTitle.getFont().deriveFont(Font.BOLD));
+    box.add(highScoreNameTitle);
+    box.add(lHighScoreName);
+    box.add(lHighScoreTime);
+    infoPanel.add(box);
+
+    box = Box.createVerticalBox();
+    JLabel fpsLabelTitle = new JLabel("FPS:");
+    fpsLabelTitle.setFont(fpsLabelTitle.getFont().deriveFont(Font.BOLD));
+    box.add(fpsLabelTitle);
+    box.add(fpsLabel);
+    infoPanel.add(box);
+
+    infoPanel.setBorder(new CompoundBorder(BorderFactory.createLineBorder(Color.GRAY), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+    add(infoPanel, BorderLayout.EAST);
 
     gameField = new GameField();
     add(gameField, BorderLayout.CENTER);
@@ -61,14 +100,18 @@ public class MainView extends JFrame {
     String name = HighScoreManager.readAttribute(Constants.HIGH_SCORE_NAME);
     float time = Float.parseFloat(HighScoreManager.readAttribute(Constants.HIGH_SCORE_TIME));
     lHighScoreName.setText(name);
-    lHighScoreTime.setText(String.valueOf(time));
+    lHighScoreTime.setText(time + " seconds");
+  }
 
-    // Start timers
+  private void startTimers() {
     gameTimer = new Timer(2, e -> gameTimerTick());
     gameTimer.start();
 
     playedTimer = new Timer(100, e -> playedTimerTick());
     playedTimer.start();
+
+    fpsTimer = new Timer(500, e -> fpsTimerTick());
+    fpsTimer.start();
 
     addKeyListener(new KeyAdapter() {
       @Override
@@ -81,10 +124,6 @@ public class MainView extends JFrame {
         onKeyUpHandler(e);
       }
     });
-
-    setFocusable(true);
-    setVisible(true);
-    gameField.addPlayer();
   }
 
   private void onKeyDownHandler(KeyEvent e) {
@@ -122,17 +161,22 @@ public class MainView extends JFrame {
     }
   }
 
+  private void fpsTimerTick() {
+    fpsLabel.setText(String.valueOf(gameField.getFpsCounter() * 2));
+  }
+
   private void gameOver() {
     gameTimer.stop();
     playedTimer.stop();
-    checkHighscore();
+    fpsTimer.stop();
+    checkHighScore();
     endGame();
   }
 
-  private void checkHighscore() {
-    // Get previous highscore
-    float score = Float.parseFloat(lHighScoreTime.getText());
-    if (timePlayed >= score) { // highscore beaten - replace it
+  private void checkHighScore() {
+    // Get previous high score
+    float score = Float.parseFloat(lHighScoreTime.getText().split(" ")[0]);
+    if (timePlayed >= score) { // high score beaten - replace it
       String newName = lPlayerName.getText();
       String newTime = lTime.getText();
       HighScoreManager.writeAttribute(Constants.HIGH_SCORE_NAME, newName);
@@ -143,7 +187,8 @@ public class MainView extends JFrame {
   }
 
   private void endGame() {
-    GameOverView gameOverDialog = new GameOverView(this, lPlayerName.getText(), lTime.getText(), lHighScoreName.getText(), lHighScoreTime.getText());
+    GameOverView gameOverDialog = new GameOverView(this, lPlayerName.getText(), lTime.getText(),
+        lHighScoreName.getText(), lHighScoreTime.getText().split(" ")[0]);
     if (gameOverDialog.getReplay()) {
       restartGame();
     } else {
@@ -166,5 +211,6 @@ public class MainView extends JFrame {
     lHighScoreTime.setText(String.valueOf(time));
     gameTimer.start();
     playedTimer.start();
+    fpsTimer.start();
   }
 }
