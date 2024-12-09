@@ -20,7 +20,7 @@ public class GameOverView extends JDialog {
 
   private void initializeComponents(String playerName, String playerTime, String highScoreName, String highScoreTime) {
     JComponent contentPane = (JComponent) getContentPane();
-    GridLayout layout = new GridLayout(4, 1);
+    GridLayout layout = new GridLayout(5, 1);
     layout.setVgap(10);
     setLayout(layout);
     contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -35,7 +35,7 @@ public class GameOverView extends JDialog {
     JLabel lblCongratulations = new JLabel();
     lblCongratulations.setFont(new Font("Arial", Font.PLAIN, 20));
     if (isHighScore) {
-      lblCongratulations.setText("Congratulations, %s! You have beaten the high score.".formatted(playerName));
+      lblCongratulations.setText("<html>Congratulations, <b>%s</b>! You have beaten the high score.".formatted(playerName));
     } else {
       lblCongratulations.setText("Well done, %s.".formatted(playerName));
     }
@@ -43,13 +43,18 @@ public class GameOverView extends JDialog {
 
     JLabel lblResult = new JLabel();
     lblResult.setFont(new Font("Arial", Font.PLAIN, 20));
-    lblResult.setText("You survived for %s seconds.".formatted(playerTime));
+    lblResult.setText("<html>You survived for <b>%s</b> seconds.</html>".formatted(playerTime));
     add(lblResult);
 
     JLabel lblPrevHighScore = new JLabel();
     lblPrevHighScore.setFont(new Font("Arial", Font.PLAIN, 20));
-    lblPrevHighScore.setText("The previous high score was %ss by %s.".formatted(highScoreTime, highScoreName));
+    lblPrevHighScore.setText("<html>The previous high score was <b>%s</b> seconds by <b>%s</b>.</html>".formatted(highScoreTime, highScoreName));
     add(lblPrevHighScore);
+
+    JLabel lblInstructions = new JLabel();
+    lblInstructions.setFont(new Font("Arial", Font.PLAIN, 20));
+    lblInstructions.setText("<html>Press <code>[RETURN]</code> to retry or <code>[ESCAPE]</code> to quit.</html>");
+    add(lblInstructions);
 
     pack();
     setLocationRelativeTo(null);
