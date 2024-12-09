@@ -25,7 +25,7 @@ public class GameOverView extends JDialog {
     setLayout(layout);
     contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-    boolean isHighScore = Float.parseFloat(playerTime) >= Float.parseFloat(highScoreTime);
+    boolean beatenHighScore = Float.parseFloat(playerTime) >= Float.parseFloat(highScoreTime);
 
     JLabel lblWelcome = new JLabel("Game Over");
     lblWelcome.setFont(new Font("Arial", Font.BOLD, 20));
@@ -34,7 +34,7 @@ public class GameOverView extends JDialog {
 
     JLabel lblCongratulations = new JLabel();
     lblCongratulations.setFont(new Font("Arial", Font.PLAIN, 20));
-    if (isHighScore) {
+    if (beatenHighScore) {
       lblCongratulations.setText("<html>Congratulations, <b>%s</b>! You have beaten the high score.".formatted(playerName));
     } else {
       lblCongratulations.setText("Well done, %s.".formatted(playerName));
@@ -48,7 +48,11 @@ public class GameOverView extends JDialog {
 
     JLabel lblPrevHighScore = new JLabel();
     lblPrevHighScore.setFont(new Font("Arial", Font.PLAIN, 20));
-    lblPrevHighScore.setText("<html>The previous high score was <b>%s</b> seconds by <b>%s</b>.</html>".formatted(highScoreTime, highScoreName));
+    if (beatenHighScore) {
+      lblPrevHighScore.setText("<html>The previous high score was <b>%s</b> seconds by <b>%s</b>.</html>".formatted(highScoreTime, highScoreName));
+    } else {
+      lblPrevHighScore.setText("<html>The current high score is <b>%s</b> seconds by <b>%s</b>.</html>".formatted(highScoreTime, highScoreName));
+    }
     add(lblPrevHighScore);
 
     JLabel lblInstructions = new JLabel();
