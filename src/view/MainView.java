@@ -167,8 +167,4 @@ public class MainView extends JFrame {
     gameTimer.start();
     playedTimer.start();
   }
-
-  public static void main(String[] args) {
-    SwingUtilities.invokeLater(MainView::new);
-  }
 }

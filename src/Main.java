@@ -5,7 +5,7 @@ import javax.swing.*;
 class Main {
   public static void main(String[] args) {
     setSystemLookAndFeel();
-    MainView.main(args);
+    SwingUtilities.invokeLater(MainView::new);
   }
 
   private static void setSystemLookAndFeel() {
