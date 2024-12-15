@@ -53,7 +53,7 @@ public class GameField extends JPanel {
   public void addPlayer() {
     player = new Player();
     player.setX(this.getWidth() / 2 - Constants.PLAYER_SIZE / 2);
-    player.setY(this.getHeight() - Constants.PLAYER_SIZE); // TODO: why?
+    player.setY(this.getHeight() - Constants.PLAYER_SIZE - 5); // 5px above ground
   }
 
   public void updatePlayerPosition(int direction) {
@@ -68,7 +68,6 @@ public class GameField extends JPanel {
       newPos = Math.max(0, Math.min(newPos, this.getWidth() - Constants.PLAYER_SIZE));
       player.setX(newPos);
     }
-    repaint();
   }
 
   public void reset() {

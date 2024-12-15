@@ -14,6 +14,7 @@ public class MainView extends JFrame {
   private GameField gameField;
   private Timer gameTimer;
   private Timer playedTimer;
+  private Timer redrawTimer;
   private Timer fpsTimer;
   private float gameSpeed = 1;
   private int direction = 0;
@@ -104,7 +105,10 @@ public class MainView extends JFrame {
   }
 
   private void startTimers() {
-    gameTimer = new Timer(2, e -> gameTimerTick());
+    redrawTimer = new Timer(1, e -> redrawTimerTick());
+    redrawTimer.start();
+
+    gameTimer = new Timer(1000 / Constants.GAME_TICKS_PER_SECOND, e -> gameTimerTick());
     gameTimer.start();
 
     playedTimer = new Timer(100, e -> playedTimerTick());
@@ -140,6 +144,10 @@ public class MainView extends JFrame {
     }
   }
 
+  private void redrawTimerTick() {
+    gameField.repaint();
+  }
+
   private void playedTimerTick() {
     gameSpeed = 1 + (int) (timePlayed / 10) * Constants.GAME_SPEED_FACTOR;
     timePlayed += 0.1F;
@@ -166,6 +174,7 @@ public class MainView extends JFrame {
   }
 
   private void gameOver() {
+    redrawTimer.stop();
     gameTimer.stop();
     playedTimer.stop();
     fpsTimer.stop();
@@ -209,6 +218,7 @@ public class MainView extends JFrame {
     float time = Float.parseFloat(HighScoreManager.readAttribute(Constants.HIGH_SCORE_TIME));
     lHighScoreName.setText(name);
     lHighScoreTime.setText(String.valueOf(time));
+    redrawTimer.start();
     gameTimer.start();
     playedTimer.start();
     fpsTimer.start();
