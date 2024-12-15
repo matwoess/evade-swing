@@ -1,6 +1,7 @@
 package game;
 
 import model.Block;
+import model.Entity;
 import model.Player;
 
 import javax.swing.*;
@@ -53,7 +54,7 @@ public class GameField extends JPanel {
   public void addPlayer() {
     player = new Player();
     player.setX(this.getWidth() / 2 - Constants.PLAYER_SIZE / 2);
-    player.setY(this.getHeight() - Constants.PLAYER_SIZE - 5); // 5px above ground
+    player.setY(this.getHeight() - Constants.PLAYER_SIZE - Constants.SHADOW_OFFSET);
   }
 
   public void updatePlayerPosition(int direction) {
@@ -80,18 +81,37 @@ public class GameField extends JPanel {
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g;
+    // Draw player
+    drawBoxShadows(player, g2d);
     g2d.setColor(Constants.PLAYER_COLOR);
     g2d.fill(player.getRect());
-    g2d.setColor(Color.BLACK);
-    g2d.drawRect(player.getX(), player.getY(), player.getSize(), player.getSize());
+    drawBoxBorder(player, g2d);
+    // Draw blocks
     for (Block b : blocks) {
+      drawBoxShadows(b, g2d);
       g2d.setColor(Constants.BLOCK_COLOR);
       g2d.fill(b.getRect());
-      g2d.setColor(Color.BLACK);
-      g2d.drawRect(b.getX(), b.getY(), b.getSize(), b.getSize());
+      drawBoxBorder(b, g2d);
     }
     fpsCounter++;
   }
+
+  private void drawBoxShadows(Entity entity, Graphics2D g2d) {
+    g2d.setColor(Constants.SHADOW_COLOR);
+    g2d.fillRoundRect(
+        entity.getX() + Constants.SHADOW_OFFSET,
+        entity.getY() + Constants.SHADOW_OFFSET,
+        entity.getSize(),
+        entity.getSize(),
+        Constants.SHADOW_OFFSET,
+        Constants.SHADOW_OFFSET);
+  }
+
+  private void drawBoxBorder(Entity entity, Graphics2D g2d) {
+    g2d.setColor(Constants.BORDER_COLOR);
+    g2d.drawRect(entity.getX(), entity.getY(), entity.getSize(), entity.getSize());
+  }
+
 
   public int getFpsCounter() {
     int currentFps = fpsCounter;

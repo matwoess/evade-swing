@@ -27,4 +27,7 @@ public class Constants {
 
   public static Color PLAYER_COLOR = yellow;
   public static Color BLOCK_COLOR = red;
+  public static Color SHADOW_COLOR = new Color(0, 0, 0, 64);
+  public static int SHADOW_OFFSET = 6;
+  public static Color BORDER_COLOR = Color.black;
 }
