@@ -149,9 +149,26 @@ public class MainView extends JFrame {
   }
 
   private void playedTimerTick() {
+    float currGameSpeed = gameSpeed;
     gameSpeed = 1 + (int) (timePlayed / 10) * Constants.GAME_SPEED_FACTOR;
+    if (currGameSpeed != gameSpeed) {
+      showSpeedUpMessage();
+    }
     timePlayed += 0.1F;
     lTime.setText(String.format("%.1f", timePlayed));
+  }
+
+  private void showSpeedUpMessage() {
+    JLabel speedUpLabel = new JLabel("Speed up!");
+    speedUpLabel.setFont(speedUpLabel.getFont().deriveFont(Font.BOLD).deriveFont(28.0F));
+    speedUpLabel.setSize(speedUpLabel.getPreferredSize());
+    speedUpLabel.setLocation(gameField.getWidth() / 2 - speedUpLabel.getWidth() / 2, gameField.getHeight() / 3);
+    gameField.add(speedUpLabel);
+    Timer timer = new Timer(2000, e -> {
+      gameField.remove(speedUpLabel);
+      ((Timer) e.getSource()).stop();
+    });
+    timer.start();
   }
 
   private void gameTimerTick() {
