@@ -27,13 +27,13 @@ public class GameOverView extends JDialog {
 
     boolean beatenHighScore = Float.parseFloat(playerTime) >= Float.parseFloat(highScoreTime);
 
-    JLabel lblWelcome = new JLabel("Game Over");
-    lblWelcome.setFont(new Font("Arial", Font.BOLD, 20));
-    lblWelcome.setAlignmentX(Component.CENTER_ALIGNMENT);
-    add(lblWelcome);
+    JLabel lblGameOver = new JLabel("Game Over");
+    lblGameOver.setFont(Constants.HEADER_FONT);
+    lblGameOver.setAlignmentX(Component.CENTER_ALIGNMENT);
+    add(lblGameOver);
 
     JLabel lblCongratulations = new JLabel();
-    lblCongratulations.setFont(new Font("Arial", Font.PLAIN, 20));
+    lblCongratulations.setFont(Constants.TEXT_FONT);
     if (beatenHighScore) {
       lblCongratulations.setText("<html>Congratulations, <b>%s</b>! You have beaten the high score.".formatted(playerName));
     } else {
@@ -42,12 +42,12 @@ public class GameOverView extends JDialog {
     add(lblCongratulations);
 
     JLabel lblResult = new JLabel();
-    lblResult.setFont(new Font("Arial", Font.PLAIN, 20));
+    lblResult.setFont(Constants.TEXT_FONT);
     lblResult.setText("<html>You survived for <b>%s</b> seconds.</html>".formatted(playerTime));
     add(lblResult);
 
     JLabel lblPrevHighScore = new JLabel();
-    lblPrevHighScore.setFont(new Font("Arial", Font.PLAIN, 20));
+    lblPrevHighScore.setFont(Constants.TEXT_FONT);
     if (beatenHighScore) {
       lblPrevHighScore.setText("<html>The previous high score was <b>%s</b> seconds by <b>%s</b>.</html>".formatted(highScoreTime, highScoreName));
     } else {
@@ -56,8 +56,8 @@ public class GameOverView extends JDialog {
     add(lblPrevHighScore);
 
     JLabel lblInstructions = new JLabel();
-    lblInstructions.setFont(new Font("Arial", Font.PLAIN, 20));
-    lblInstructions.setText("<html>Press <code>[RETURN]</code> to retry or <code>[ESCAPE]</code> to quit.</html>");
+    lblInstructions.setFont(Constants.TEXT_FONT);
+    lblInstructions.setText("<html>Press <b>[RETURN]</b> to retry or <b>[ESCAPE]</b> to quit.</html>");
     add(lblInstructions);
 
     pack();

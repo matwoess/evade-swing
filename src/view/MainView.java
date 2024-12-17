@@ -28,7 +28,7 @@ public class MainView extends JFrame {
 
   public MainView() {
     setTitle("Evade Game");
-    setSize(1000, 600);
+    setSize(1300, 800);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(new BorderLayout());
 
@@ -53,41 +53,57 @@ public class MainView extends JFrame {
   }
 
   private void initializeComponents(String playerName) {
-    lPlayerName = new JLabel(playerName);
-    lHighScoreName = new JLabel();
-    lHighScoreTime = new JLabel();
-    lTime = new JLabel("0.0");
-    fpsLabel = new JLabel("0");
-
     JPanel infoPanel = new JPanel();
-    infoPanel.setLayout(new GridLayout(4, 1));
+    GridLayout layout = new GridLayout(5, 1);
+    infoPanel.setLayout(layout);
 
     Box box = Box.createVerticalBox();
-    JLabel playerTitle = new JLabel("Player Name:");
-    playerTitle.setFont(playerTitle.getFont().deriveFont(Font.BOLD));
+    JLabel playerTitle = new JLabel("Player Name");
+    playerTitle.setFont(Constants.MONO_HEADER_FONT);
+    playerTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
     box.add(playerTitle);
+    lPlayerName = new JLabel(playerName);
+    lPlayerName.setFont(Constants.MONO_TEXT_FONT);
+    lPlayerName.setAlignmentX(Component.CENTER_ALIGNMENT);
     box.add(lPlayerName);
     infoPanel.add(box);
 
     box = Box.createVerticalBox();
-    JLabel highScoreTimeTitle = new JLabel("Time:");
-    highScoreTimeTitle.setFont(highScoreTimeTitle.getFont().deriveFont(Font.BOLD));
+    JLabel highScoreTimeTitle = new JLabel("Time");
+    highScoreTimeTitle.setFont(Constants.MONO_HEADER_FONT);
+    highScoreTimeTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
     box.add(highScoreTimeTitle);
+    lTime = new JLabel();
+    lTime.setFont(Constants.MONO_TEXT_FONT);
+    lTime.setAlignmentX(Component.CENTER_ALIGNMENT);
     box.add(lTime);
     infoPanel.add(box);
 
     box = Box.createVerticalBox();
-    JLabel highScoreNameTitle = new JLabel("Highscore:");
-    highScoreNameTitle.setFont(highScoreNameTitle.getFont().deriveFont(Font.BOLD));
+    JLabel highScoreNameTitle = new JLabel("Highscore");
+    highScoreNameTitle.setFont(Constants.MONO_HEADER_FONT);
+    highScoreNameTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
     box.add(highScoreNameTitle);
+    lHighScoreName = new JLabel();
+    lHighScoreName.setFont(Constants.MONO_TEXT_FONT);
+    lHighScoreName.setAlignmentX(Component.CENTER_ALIGNMENT);
     box.add(lHighScoreName);
+    lHighScoreTime = new JLabel();
+    lHighScoreTime.setFont(Constants.MONO_TEXT_FONT);
+    lHighScoreTime.setAlignmentX(Component.CENTER_ALIGNMENT);
     box.add(lHighScoreTime);
     infoPanel.add(box);
 
+    infoPanel.add(Box.createGlue()); // spacer
+
     box = Box.createVerticalBox();
-    JLabel fpsLabelTitle = new JLabel("FPS:");
-    fpsLabelTitle.setFont(fpsLabelTitle.getFont().deriveFont(Font.BOLD));
+    JLabel fpsLabelTitle = new JLabel("FPS");
+    fpsLabelTitle.setFont(Constants.MONO_HEADER_FONT);
+    fpsLabelTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
     box.add(fpsLabelTitle);
+    fpsLabel = new JLabel();
+    fpsLabel.setFont(Constants.MONO_TEXT_FONT);
+    fpsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
     box.add(fpsLabel);
     infoPanel.add(box);
 
@@ -160,7 +176,7 @@ public class MainView extends JFrame {
 
   private void showSpeedUpMessage() {
     JLabel speedUpLabel = new JLabel("Speed up!");
-    speedUpLabel.setFont(speedUpLabel.getFont().deriveFont(Font.BOLD).deriveFont(28.0F));
+    speedUpLabel.setFont(Constants.MONO_TOAST_FONT);
     speedUpLabel.setSize(speedUpLabel.getPreferredSize());
     speedUpLabel.setLocation(gameField.getWidth() / 2 - speedUpLabel.getWidth() / 2, gameField.getHeight() / 3);
     gameField.add(speedUpLabel);

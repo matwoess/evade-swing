@@ -9,7 +9,7 @@ import static java.awt.Color.yellow;
 public class Constants {
   public static final int GAME_TICKS_PER_SECOND = 60;
   public static float GAME_SPEED_FACTOR = 0.2F; // magicnumber
-  public static int BLOCK_CREATE_TICKS = GAME_TICKS_PER_SECOND / 4; // magicnumber
+  public static int BLOCK_CREATE_TICKS = GAME_TICKS_PER_SECOND / 6; // magicnumber
   public static int COUNTDOWN_TIME = 2;
 
   public static Path HIGH_SCORE_FILE = Path.of("highscore.hs");
@@ -30,4 +30,12 @@ public class Constants {
   public static Color SHADOW_COLOR = new Color(0, 0, 0, 64);
   public static int SHADOW_OFFSET = 6;
   public static Color BORDER_COLOR = Color.black;
+
+  public static Font HEADER_FONT = new Font("Arial", Font.BOLD, 32);
+  public static Font TEXT_FONT = new Font("Arial", Font.PLAIN, 28);
+  public static Font INPUT_FONT = new Font("Arial", Font.PLAIN, 28);
+  public static Font MONO_HEADER_FONT = new Font("Consolas", Font.BOLD, 42);
+  public static Font MONO_TEXT_FONT = new Font("Consolas", Font.PLAIN, 38);
+  public static Font MONO_TOAST_FONT = new Font("Consolas", Font.BOLD, 48);
+
 }
